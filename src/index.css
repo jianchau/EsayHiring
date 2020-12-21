@@ -1,4 +1,7 @@
+/* 导入antd样式 */
 @import 'antd/dist/antd.css';
+
+/* 初始化样式 */
 html,body{
   height:100%;
   width:100%
@@ -11,11 +14,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+/* 设置layout布局 */
 #root{
   height:100% 
 }
@@ -46,10 +49,11 @@ code {
 .ant-layout-sider{
   height:100%
 }
+/* 设置logo样式 */
 .logo{
   display:flex;
   justify-content: space-around;
-  color:rgb(15,180,219);
+  color:rgb(0,152,219);
   line-height: 40px;
 }
 .logoimg{
@@ -58,3 +62,9 @@ code {
   position: relative;
   top:-2px
 }
+/* 设置trigger大小 */
+.trigger{
+  font-size: 30px;
+  margin-left: 16px;
+}
+
