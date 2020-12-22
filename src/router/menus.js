@@ -2,7 +2,7 @@ import { createFromIconfontCN } from '@ant-design/icons'
 import { lazy } from 'react';
 
 const IconFont = createFromIconfontCN({
-    scriptUrl: '//at.alicdn.com/t/font_2282467_2d1xynktf5s.js',
+    scriptUrl: '//at.alicdn.com/t/font_2282467_gu27ihrkrpf.js',
   });
 
 
@@ -81,6 +81,29 @@ const menus = [
                 title:'评价员工',
                 icon:<IconFont type="icon-pingjia"/>,
                 component:lazy(()=>import('../pages/evalueate/EvalueateEmployee'))
+            }
+        ]
+    },
+    {
+        path:'/corperation',
+        key:'/corperation',
+        title:'企业管理',
+        icon:<IconFont type="icon-icongl" />,
+        redirect:'/corperation/departmentManage',
+        children:[
+            {
+                path:'/corperation/departmentManage',
+                key:'corperation/departmentManage',
+                title:'部门管理',
+                icon:<IconFont type="icon-bumen" />,
+                component:lazy(()=>import('../pages/corperation/DepartmentManage'))
+            },
+            {
+                path:'/corperaion/ocupationManage',
+                key:'corperaion/ocupationManage',
+                title:'职位管理',
+                icon:<IconFont type="icon-zhiwei" />,
+                component:lazy(()=>import('../pages/corperation/OcupationManage'))
             }
         ]
     },

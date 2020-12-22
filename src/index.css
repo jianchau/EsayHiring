@@ -71,6 +71,12 @@ code {
   flex:0 0 20%;
   min-width: 200px;
 }
-
+/* 设置表格自适应 */
+.ant-layout-content{
+  
+} 
+.ant-table-wrapper{
+  height:calc(100% - 72px);
+}
 
 
