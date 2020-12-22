@@ -1,16 +1,19 @@
-import React from 'react'
+import React,{Suspense} from 'react'
 import {connect} from 'react-redux'
 import { Layout} from 'antd';
+import {Spin} from 'antd'
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
 } from '@ant-design/icons';
+
 import SideMenu from './SideMenu'
 import {changeCollapsed} from '../store/actionCreators'
+import RouterView from '../router/routerView'
+import RedirectRouterView from '../router/redirectRouterView'
 const { Header,Content } = Layout;
 const Main = (props)=> {
     const toggle = () => {
-        console.log(115);
         props.changeCollapsed()
     };
     return (
@@ -31,7 +34,11 @@ const Main = (props)=> {
                     minHeight: 280,
                 }}
             >
-                ojfosjfojo
+                <Suspense fallback={<Spin />}>
+                    <RouterView />
+                    <RedirectRouterView />
+                </Suspense>
+                
             </Content>
             </Layout>
         </Layout>

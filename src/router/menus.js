@@ -20,7 +20,7 @@ const menus = [
         key:'/home',
         title:'首页',
         icon:<IconFont type="icon-shouye" />,
-        component:lazy(()=>import('../pages/home')),
+        component:lazy(()=>import('../pages/Home')),
     },
     {
         path:'/information',
@@ -34,12 +34,10 @@ const menus = [
                 key:'/information/lookupInformation',
                 title:'查看人才信息',
                 icon:<IconFont type="icon-gonggongrencaiku" />,
-                component:lazy(()=>import('../pages/information/lookUpInformation'))
-                
+                component:lazy(()=>import('../pages/information/LookUpInformation')) 
             }
         ] 
     },
-    
     {
         path:'/file',
         key:'/file',
@@ -52,25 +50,24 @@ const menus = [
                 key:'/file/lookUpFile',
                 title:'查看员工档案',
                 icon:<IconFont type="icon-icon-"/>,
-                component:lazy(()=>import('../pages/employeeFile/lookupFile')),
+                component:lazy(()=>import('../pages/employeeFile/LookupFile')),
             },
             {
                 path:'/file/newEmployeeFile',
                 key:'/file/newEmployeeFile',
                 title:'新增员工档案',
                 icon:<IconFont type="icon-tianjiaqiyedangan"/>,
-                component:lazy(()=>import('../pages/employeeFile/newEmployeeFile')),
+                component:lazy(()=>import('../pages/employeeFile/NewEmployeeFile')),
             },
             {
                 path:'/file/deleteEmployeeFile',
                 key:'/file/deleteEmployeeFile',
                 title:'删除员工档案',
                 icon:<IconFont type="icon-shanchu"/>,
-                component:lazy(()=>import('../pages/employeeFile/deleteEmployeeFile')),
+                component:lazy(()=>import('../pages/employeeFile/DeleteEmployeeFile')),
             },
         ]
     },
-    
     {
         path:'/evalueate',
         key:'/evalueate',
@@ -79,21 +76,20 @@ const menus = [
         redirect:'/evalueate/evalueateEmployee',
         children:[
             {
-                path:'evalueate/evalueateEmployee',
-                key:'evalueate/evalueateEmployee',
+                path:'/evalueate/evalueateEmployee',
+                key:'/evalueate/evalueateEmployee',
                 title:'评价员工',
                 icon:<IconFont type="icon-pingjia"/>,
-                component:lazy(()=>import('../pages/evalueate/evalueateEmployee'))
+                component:lazy(()=>import('../pages/evalueate/EvalueateEmployee'))
             }
         ]
     },
-    
     {
         path:'/setting',
         key:'setting',
         title:'设置',
         icon:<IconFont type="icon-shezhi-"/>,
-        component:lazy(()=>import('../pages/setting'))
+        component:lazy(()=>import('../pages/Setting'))
     }
 ]
 

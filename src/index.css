@@ -67,4 +67,10 @@ code {
   font-size: 30px;
   margin-left: 16px;
 }
+.ant-col{
+  flex:0 0 20%;
+  min-width: 200px;
+}
+
+
 
