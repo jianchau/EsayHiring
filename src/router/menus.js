@@ -1,4 +1,4 @@
-import Icon, { createFromIconfontCN } from '@ant-design/icons'
+import { createFromIconfontCN } from '@ant-design/icons'
 import { lazy } from 'react';
 
 const IconFont = createFromIconfontCN({
@@ -160,6 +160,15 @@ const menus = [
         title:'设置',
         icon:<IconFont type="icon-shezhi-"/>,
         component:lazy(()=>import('../pages/Setting'))
+    },
+    {
+        path:'/notFound',
+        key:'/notFound',
+        title:'NotFound',
+        component:lazy(()=>import('../pages/NotFound')),
+        meta:{
+            hidden:true
+        }
     }
 ]
 

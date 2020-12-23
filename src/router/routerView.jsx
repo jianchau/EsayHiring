@@ -1,6 +1,8 @@
 import React from 'react'
 import {Route,Switch} from 'react-router-dom'
+
 import menus from './menus'
+import RedirectRouterView from '../router/redirectRouterView'
 function RouterView() {
     let arr = []
     const renderRoutes = (menus)=>{
@@ -20,6 +22,7 @@ function RouterView() {
     return (
         <Switch>
             {arr}
+            <RedirectRouterView />
         </Switch>
     )
 }

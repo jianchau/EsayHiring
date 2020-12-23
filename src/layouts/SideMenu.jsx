@@ -11,12 +11,16 @@ function SideMenu(props) {
     const history = useHistory()
     const location = useLocation()
     const {pathname} = location
-    const openKey = '/'+pathname.split('/')[1]
+    const openKey = pathname==='/notFound'?'':'/'+pathname.split('/')[1]
     const [selectedKeys,setSelectedKeys] = useState([pathname])
     const [openKeys,setOpenKeys] = useState([openKey])
     useEffect(()=>{
         setSelectedKeys([pathname])
     },[pathname])
+    useEffect(()=>{
+        setOpenKeys([openKey])
+    },[openKey])
+    
     const renderMenus = (menus)=>{
         return (
             <>

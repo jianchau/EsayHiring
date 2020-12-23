@@ -45,7 +45,7 @@ const columns = [
 
 const data = [];
 
-const DepartmentManage = ()=> {
+const LookUpDepartment = ()=> {
     const history = useHistory()
     const [selectedRowKeys,setSelectedRowKeys] = useState([])
     const [loading,setLoading] = useState(false)
@@ -99,4 +99,4 @@ const DepartmentManage = ()=> {
     );
 }
 
-export default DepartmentManage
+export default LookUpDepartment

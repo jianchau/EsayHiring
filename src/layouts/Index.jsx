@@ -1,4 +1,5 @@
 import React,{Suspense} from 'react'
+import {Switch} from 'react-router-dom'
 import {connect} from 'react-redux'
 import { Layout} from 'antd';
 import {Spin} from 'antd'
@@ -10,7 +11,7 @@ import {
 import SideMenu from './SideMenu'
 import {changeCollapsed} from '../store/actionCreators'
 import RouterView from '../router/routerView'
-import RedirectRouterView from '../router/redirectRouterView'
+
 const { Header,Content } = Layout;
 const Main = (props)=> {
     const toggle = () => {
@@ -34,9 +35,8 @@ const Main = (props)=> {
                     minHeight: 280,
                 }}
             >
-                <Suspense fallback={<Spin />}>
-                    <RouterView />
-                    <RedirectRouterView />
+                <Suspense fallback={<div className = "spinner"> <Spin size="large" /></div>}>
+                    <RouterView />                    
                 </Suspense>
                 
             </Content>

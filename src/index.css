@@ -78,5 +78,15 @@ code {
 .ant-table-wrapper{
   height:calc(100% - 72px);
 }
+/* 设置spinner居中 */
+.ant-layout-content{
+  position: relative;
+}
+.spinner{
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(50%,50%);
+}
 
 

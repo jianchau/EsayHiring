@@ -19,6 +19,7 @@ function RedirectRouterView() {
         })
     }
     renderRedirectRoutes(menus)
+    arr.push(<Redirect from="/*" to="/notFound" key='/notFound'/>)
     return (
         <Switch>
             {arr}
