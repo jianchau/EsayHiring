@@ -1,5 +1,4 @@
 import React,{Suspense} from 'react'
-import {Switch} from 'react-router-dom'
 import {connect} from 'react-redux'
 import { Layout} from 'antd';
 import {Spin} from 'antd'

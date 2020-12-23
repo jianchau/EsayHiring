@@ -1,20 +1,14 @@
 import React, { useState } from 'react'
 import 'moment/locale/zh-cn'
-import locale from 'antd/es/date-picker/locale/zh_CN'
 import {
     Form,
     Input,
-    Tooltip,
-    Cascader,
     Select,
-    Row,
-    Col,
-    Checkbox,
     Button,
-    DatePicker,
-    // AutoComplete,
+    Upload,
+    message
 } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 
 const {Option} = Select
 const formItemLayout = {
@@ -50,49 +44,61 @@ const tailFormItemLayout = {
 
 const AddAsocciate = () => {
     const [form] = Form.useForm();
-
+    //是否已有部门，职业
+    const [loading,setLoading] = useState(false)
+    const [imageUrl,setImageUrl] = useState('')
     const onFinish = (values) => {
         console.log('Received values of form: ', values);
     };
-
-    const prefixSelector = (
-        <Form.Item name="prefix" noStyle>
-        <Select
-            style={{
-            width: 70,
-            }}
-        >
-            <Option value="86">+86</Option>
-            <Option value="87">+87</Option>
-        </Select>
-        </Form.Item>
-    );
-    // const [autoCompleteResult, setAutoCompleteResult] = useState([]);
-
-    const onWebsiteChange = (value) => {
-        if (!value) {
-        // setAutoCompleteResult([]);
-        } else {
-        // setAutoCompleteResult(['.com', '.org', '.net'].map((domain) => `${value}${domain}`));
+    const uploadButton = (
+        <div>
+          {loading ? <LoadingOutlined /> : <PlusOutlined />}
+          <div style={{ marginTop: 8 }}>点击上传头像</div>
+        </div>
+      );
+    const getBase64 = (img, callback)=> {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => callback(reader.result));
+        reader.readAsDataURL(img);
+      }
+      
+    const beforeUpload = (file) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+        message.error('You can only upload JPG/PNG file!');
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+            message.error('Image must smaller than 2MB!');
         }
-    };
-
-    // const websiteOptions = autoCompleteResult.map((website) => ({
-    //     label: website,
-    //     value: website,
-    // }));
+        return isJpgOrPng && isLt2M;
+    }
+    const handleChange = info => {
+        if (info.file.status === 'uploading') {
+         setLoading(true)
+          return;
+        }
+        if (info.file.status === 'done') {
+          // Get this url from response in real world.
+          getBase64(info.file.originFileObj, imageUrl =>{
+            console.log(imageUrl);
+            setImageUrl(imageUrl)
+            setLoading(false)
+          }
+          );
+        }
+      };
+      
     return (
         <Form
-        {...formItemLayout}
-        form={form}
-        name="register"
-        onFinish={onFinish}
-        initialValues={{
-            residence: ['zhejiang', 'hangzhou', 'xihu'],
-            prefix: '86',
-        }}
-        scrollToFirstError
+            {...formItemLayout}
+            form={form}
+            name="register"
+            onFinish={onFinish}
+            scrollToFirstError
+            initialValues={{}}
         >
+        
         <Form.Item
             name="name"
             label="姓名"
@@ -127,10 +133,11 @@ const AddAsocciate = () => {
                 message: '请选择员工性别!',
             },
             ]}
+            initialValue="请点击后选择性别"
         >
-            <Select defaultValue="请点击后选择性别">
+            <Select >
                 <Option value="男">男</Option>
-                <option value="女">女</option>
+                <Option value="女">女</Option>
             </Select>
         </Form.Item>
         <Form.Item
@@ -158,6 +165,41 @@ const AddAsocciate = () => {
             <Input />
         </Form.Item>
         <Form.Item
+            name="avatar"
+            label="头像"
+            rules={[
+            {
+                required: true,
+                message: '请上传员工头像!',
+            },
+            ]}
+        >
+            <Upload
+                name="avatar"
+                listType="picture-card"
+                className="avatar-uploader"
+                showUploadList={false}
+                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                beforeUpload={beforeUpload}
+                onChange={handleChange}
+            >
+                {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+            </Upload>
+            
+        </Form.Item>
+        <Form.Item
+            name="phoneNumber"
+            label="电话号码"
+            rules={[
+            {
+                required: true,
+                message: '请输入员工电话号码!',
+            },
+            ]}
+        >
+           <Input />
+        </Form.Item>
+        <Form.Item
             name="ocupation"
             label="职位"
             rules={[
@@ -166,8 +208,9 @@ const AddAsocciate = () => {
                 message: '请选择员工职位!',
             },
             ]}
+            initialValue="请点击后选择职位"
         >
-            <Select defaultValue="请点击后选择职位">
+            <Select >
 
             </Select>
         </Form.Item>
@@ -180,13 +223,14 @@ const AddAsocciate = () => {
                 message: '请选择员工所属部门!',
             },
             ]}
+            initialValue = "请点击后选择部门"
         >
-            <Select defaultValue = "请点击后选择部门">
+            <Select >
             </Select>
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit">
-            添加
+                    添加
             </Button>
         </Form.Item>
         </Form>

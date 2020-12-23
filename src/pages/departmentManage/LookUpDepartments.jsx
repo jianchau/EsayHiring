@@ -10,6 +10,11 @@ const columns = [
         render:(text,record,index)=>{return index+1}
     },
     {
+        title:'部门代号',
+        dataIndex:'departmentCode',
+        align:'center',
+    },
+    {
         title: '部门名称',
         align:'center',
         dataIndex: 'name',

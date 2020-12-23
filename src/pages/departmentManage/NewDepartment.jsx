@@ -1,55 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import 'moment/locale/zh-cn';
-import locale from 'antd/es/date-picker/locale/zh_CN';
 import {
     Form,
     Input,
-    Tooltip,
-    Cascader,
     Select,
-    Row,
-    Col,
-    Checkbox,
     Button,
-    DatePicker,
-    // AutoComplete,
 } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
 const { Option } = Select;
-const residences = [
-  {
-    value: 'zhejiang',
-    label: 'Zhejiang',
-    children: [
-      {
-        value: 'hangzhou',
-        label: 'Hangzhou',
-        children: [
-          {
-            value: 'xihu',
-            label: 'West Lake',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    value: 'jiangsu',
-    label: 'Jiangsu',
-    children: [
-      {
-        value: 'nanjing',
-        label: 'Nanjing',
-        children: [
-          {
-            value: 'zhonghuamen',
-            label: 'Zhong Hua Men',
-          },
-        ],
-      },
-    ],
-  },
-];
 const formItemLayout = {
     labelCol: {
         xs: {
@@ -88,32 +45,7 @@ const NewDepartment = () => {
         console.log('Received values of form: ', values);
     };
 
-    const prefixSelector = (
-        <Form.Item name="prefix" noStyle>
-        <Select
-            style={{
-            width: 70,
-            }}
-        >
-            <Option value="86">+86</Option>
-            <Option value="87">+87</Option>
-        </Select>
-        </Form.Item>
-    );
-    // const [autoCompleteResult, setAutoCompleteResult] = useState([]);
 
-    const onWebsiteChange = (value) => {
-        if (!value) {
-        // setAutoCompleteResult([]);
-        } else {
-        // setAutoCompleteResult(['.com', '.org', '.net'].map((domain) => `${value}${domain}`));
-        }
-    };
-
-    // const websiteOptions = autoCompleteResult.map((website) => ({
-    //     label: website,
-    //     value: website,
-    // }));
     return (
         <Form
         {...formItemLayout}
@@ -150,32 +82,22 @@ const NewDepartment = () => {
         >
             <Input />
         </Form.Item>
-
         <Form.Item
-            name="corperaion"
-            label="部门经理"
+            name="departmentCode"
+            label="部门代号"
             rules={[
-            {
-                required: true,
-                message: 'Please input your password!',
-            },
+                {
+                    type: 'string',
+                    message: '部门名称格式错误!',
+                },
+                {
+                    required: true,
+                    message: '此项不能为空!',
+                }
             ]}
         >
             <Input />
         </Form.Item>
-        <Form.Item
-            name="department"
-            label="部门职位"
-            rules={[
-            {
-                required: true,
-                message: 'Please input your password!',
-            },
-            ]}
-        >
-            <Input />
-        </Form.Item>
-        
         <Form.Item {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit">
             添加
