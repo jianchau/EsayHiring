@@ -3,10 +3,10 @@ import 'moment/locale/zh-cn';
 import {
     Form,
     Input,
-    Select,
     Button,
 } from 'antd';
-const { Option } = Select;
+import qs from 'qs'
+import {newDepartment} from './../../api/department'
 const formItemLayout = {
     labelCol: {
         xs: {
@@ -37,12 +37,11 @@ const tailFormItemLayout = {
         },
     },
 };
-
 const NewDepartment = () => {
     const [form] = Form.useForm();
 
     const onFinish = (values) => {
-        console.log('Received values of form: ', values);
+        newDepartment(qs.stringify(values)).then(res=>console.log(res))
     };
 
 
@@ -59,7 +58,7 @@ const NewDepartment = () => {
         scrollToFirstError
         >
         <Form.Item
-            name="name"
+            name="departmentName"
             label="部门名称"
             rules={[
             {
@@ -100,7 +99,7 @@ const NewDepartment = () => {
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit">
-            添加
+                添加
             </Button>
         </Form.Item>
         </Form>
