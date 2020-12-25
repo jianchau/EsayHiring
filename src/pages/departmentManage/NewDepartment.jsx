@@ -1,11 +1,13 @@
 import React from 'react';
+import {useHistory} from 'react-router-dom'
 import 'moment/locale/zh-cn';
 import {
     Form,
     Input,
     Button,
+    message
 } from 'antd';
-import qs from 'qs'
+
 import {newDepartment} from './../../api/department'
 const formItemLayout = {
     labelCol: {
@@ -38,12 +40,19 @@ const tailFormItemLayout = {
     },
 };
 const NewDepartment = () => {
+    const history = useHistory()
     const [form] = Form.useForm();
-
     const onFinish = (values) => {
-        newDepartment(qs.stringify(values)).then(res=>console.log(res))
+        newDepartment(values).then(res=>{
+            if(res.data.code===200){
+                message.info("添加成功")
+                history.push('/departmentManage/lookUpDepartments')
+            }
+            else if(res.data.code === 5001){
+                message.info("该部门号已经存在")
+            }
+        })
     };
-
 
     return (
         <Form

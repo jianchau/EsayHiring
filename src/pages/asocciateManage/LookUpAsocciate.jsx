@@ -47,6 +47,7 @@ const columns = [
     {
         title:'操作',
         align:'center',
+        key:"operation",
         render:()=>{
             return (
                 <>
