@@ -1,11 +1,18 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
+import {useHistory} from 'react-router-dom'
 import 'moment/locale/zh-cn'
 import {
     Form,
     Input,
     Button,
-    Select
+    Select,
+    message
 } from 'antd';
+
+import {lookUpDepartment} from './../../api/department'
+import {addOcupation} from './../../api/ocupation'
+
+const {Option} = Select
 const formItemLayout = {
     labelCol: {
         xs: {
@@ -24,6 +31,7 @@ const formItemLayout = {
         },
     },
 };
+
 const tailFormItemLayout = {
     wrapperCol: {
         xs: {
@@ -38,11 +46,28 @@ const tailFormItemLayout = {
 };
 
 const AddOcupation = () => {
+    const history = useHistory()
+    const [departmentData,setDepartmentData]= useState([])
+    useEffect(()=>{
+        lookUpDepartment().then(res=>{
+            if(res.data.code===200){
+                setDepartmentData(res.data.data)                
+            }
+        })
+    },[])
+    const departmentOptions = departmentData.map(department=><Option value={department.departmentName} key={department.departmentID}>{department.departmentName}</Option>)
+    
     const [form] = Form.useForm();
 
     const onFinish = (values) => {
-        console.log('Received values of form: ', values);
+        addOcupation(values).then(res=>{
+            if(res.data.code===200){
+                message.info('添加职位成功')
+                history.push('/ocupationManage/lookUpOcupations')
+            }
+        })
     };
+
 
     return (
         <Form
@@ -57,7 +82,7 @@ const AddOcupation = () => {
         scrollToFirstError
         >
         <Form.Item
-            name="ocupation"
+            name="ocupationName"
             label="职位名称"
             rules={[
             {
@@ -69,8 +94,9 @@ const AddOcupation = () => {
             <Input />
         </Form.Item>
         <Form.Item
-            name="department"
+            name="inWhichDepartment"
             label="所属部门"
+            initialValue="请选择职位所属部门"
             rules={[
             {
                 required: true,
@@ -78,14 +104,13 @@ const AddOcupation = () => {
             },
             ]}
         >
-            <Select
-                defaultValue="请选择职位所属部门"
-            
-            />
+            <Select>
+                {departmentOptions}
+            </Select>
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit">
-            添加
+                添加
             </Button>
         </Form.Item>
         </Form>

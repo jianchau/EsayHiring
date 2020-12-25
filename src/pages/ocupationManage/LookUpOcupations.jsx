@@ -1,56 +1,22 @@
-import {useState} from 'react'
+import {useState,useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
-import { Table, Button,Space } from 'antd';
+import { Table, Button,Space,Popconfirm,message } from 'antd';
 
-const columns = [
-    {
-        title:'序号',
-        dataIndex:'index',
-        align:'center',
-        render:(text,record,index)=>{return index+1}
-    },
-    {
-        title: '部门名称',
-        align:'center',
-        dataIndex: 'name',
-    },
-    {
-        title: '部门经理',
-        align:'center',
-        dataIndex: 'departmentManager',
-    },
-    {
-        title: '部门人数',
-        align:'center',
-        dataIndex: 'departmentQuantity',
-    },
-    {
-        title:'部门职位',
-        align:'center',
-        dataIndex:'departmentOcupations'
-    },
-    {
-        title:'操作',
-        align:'center',
-        key:'operation',
-        render:()=>{
-            return (
-                <>
-                    <Button type="primary">详情</Button>
-                    <Button type="primary">详情</Button>
-                </>
-            )
-        }
-    }
-];
+import {lookUpOcupation} from './../../api/ocupation'
+import {deleteOcupation} from './../../api/ocupation'
 
-const data = [];
-
-const DepartmentManage = ()=> {
+const LookUpOCupation = ()=> {
     const history = useHistory()
     const [selectedRowKeys,setSelectedRowKeys] = useState([])
     const [loading,setLoading] = useState(false)
-    
+    const [data,setData] = useState([])
+    useEffect(()=>{
+        lookUpOcupation().then(res=>{
+            if(res.data.code===200){
+                setData(res.data.data)
+            }
+        })
+    },[])
     const start = () => {
         setLoading(true);
         setTimeout(() => {
@@ -71,6 +37,68 @@ const DepartmentManage = ()=> {
     const addOcupation = ()=>{
         history.push('/ocupationManage/addOcupation') 
     }
+    function confirm(ocupationID) {
+        return ()=>{
+            deleteOcupation({ocupationID}).then(res=>{
+                if(res.data.code===200){
+                    lookUpOcupation().then(res=>{
+                        if(res.data.code===200){
+                            setData(res.data.data)
+                        }
+                    })
+                    message.info('删除职位成功')
+                }
+            })
+        }
+    }
+      
+    function cancel(e) {
+    }
+
+    const columns = [
+        {
+            title:'序号',
+            dataIndex:'index',
+            align:'center',
+            render:(text,record,index)=>{return index+1}
+        },
+        {
+            title: '职位名称',
+            align:'center',
+            dataIndex: 'ocupationName',
+        },
+        {
+            title: '所属部门',
+            align:'center',
+            dataIndex: 'inWhichDepartment',
+        },
+        {
+            title: '职位人数',
+            align:'center',
+            dataIndex: 'ocupationQuantity',
+        },
+        {
+            title:'操作',
+            align:'center',
+            key:'operation',
+            render:(text,record,index)=>{
+                return (
+                    <Space>
+                        <Button type="primary">编辑</Button>
+                        <Popconfirm
+                            title="你确定要删除这个职位吗?"
+                            onConfirm={confirm(record.ocupationID)}
+                            onCancel={cancel}
+                            okText="确定"
+                            cancelText="取消"
+                        >
+                            <Button type="primary">删除</Button>
+                        </Popconfirm>
+                    </Space>
+                )
+            }
+        }
+    ];
 
     return (
         <div>
@@ -90,6 +118,7 @@ const DepartmentManage = ()=> {
             <Table 
                 rowSelection={rowSelection} 
                 bordered
+                rowKey={record=>record.ocupationID}
                 scroll={{
                     y:'320px'
                 }}
@@ -100,4 +129,4 @@ const DepartmentManage = ()=> {
     );
 }
 
-export default DepartmentManage
+export default LookUpOCupation

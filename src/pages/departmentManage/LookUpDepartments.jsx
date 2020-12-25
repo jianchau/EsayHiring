@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
-import { Table, Button,Space,Popconfirm,message } from 'antd';
+import { Table, Button,Space,Popconfirm} from 'antd';
 
 import {deleteDepartment} from './../../api/department'
 import {lookUpDepartment} from './../../api/department'
@@ -24,7 +24,6 @@ const LookUpDepartment = ()=> {
     };
 
     const onSelectChange = selectedRowKeys => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
         setSelectedRowKeys(selectedRowKeys)
     };
     const rowSelection = {
@@ -36,10 +35,9 @@ const LookUpDepartment = ()=> {
         history.push('/departmentManage/addDepartment') 
     }
     function confirm(departmentID) {
-        console.log(departmentID);
         return ()=>{
             deleteDepartment({departmentID:departmentID}).then(res=>{
-                if(res.data.code=200){
+                if(res.data.code===200){
                     lookUpDepartment().then(res=>{
                 setData(res.data.data)
             })
@@ -49,8 +47,7 @@ const LookUpDepartment = ()=> {
     }
     
     function cancel(e) {
-        console.log(e);
-        message.error('Click on No');
+
     }
     
     const columns = [
