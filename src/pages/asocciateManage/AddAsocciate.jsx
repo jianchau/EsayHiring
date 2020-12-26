@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import 'moment/locale/zh-cn'
 import {
     Form,
@@ -9,6 +9,9 @@ import {
     message
 } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+
+import {lookUpDepartment} from './../../api/department'
+import {lookUpOcupation} from './../../api/ocupation'
 
 const {Option} = Select
 const formItemLayout = {
@@ -44,9 +47,21 @@ const tailFormItemLayout = {
 
 const AddAsocciate = () => {
     const [form] = Form.useForm();
-    //是否已有部门，职业
     const [loading,setLoading] = useState(false)
+    const [ocupationDisabled,setOcupationDisabled] = useState(true)
+    const [departmentData,setDepartmentData] = useState([])
+    const [ocupationData,setOcupationData] = useState([])
     const [imageUrl,setImageUrl] = useState('')
+    useEffect(()=>{
+        lookUpDepartment().then(res=>{
+            if(res.data.code===200){
+                setDepartmentData(res.data.data)
+            }
+        })
+    },[])
+    
+    const departmentOptions = departmentData.map(department=><Option value = {department.departmentName} key={department.departmentID}>{department.departmentName}</Option>)
+    const ocupationOptions = ocupationData.map(ocupation=><Option value={ocupation.ocupationName}>{ocupation.ocupationName}</Option>)
     const onFinish = (values) => {
         console.log('Received values of form: ', values);
     };
@@ -65,11 +80,11 @@ const AddAsocciate = () => {
     const beforeUpload = (file) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
-        message.error('You can only upload JPG/PNG file!');
+        message.error('只能上传格式为JPG/PNG的文件!');
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
         if (!isLt2M) {
-            message.error('Image must smaller than 2MB!');
+            message.error('图片要求小于2M!');
         }
         return isJpgOrPng && isLt2M;
     }
@@ -87,7 +102,14 @@ const AddAsocciate = () => {
           }
           );
         }
-      };
+    };
+
+    const handleDepartmentOptionChange = (value,option)=>{
+        lookUpOcupation({inWhichDepartment:value}).then(res=>{
+            setOcupationData(res.data.data)
+            setOcupationDisabled(false)
+        })
+    }
       
     return (
         <Form
@@ -118,6 +140,26 @@ const AddAsocciate = () => {
             {
                 max:10,
                 message:'姓名最多20字符'
+            }
+            ]}
+        >
+            <Input />
+        </Form.Item>
+        <Form.Item
+            name="CardID"
+            label="身份证号"
+            rules={[
+            {
+                type: 'string',
+                message: '身份证号格式错误!',
+            },
+            {
+                required: true,
+                message: '此项不能为空!',
+            },
+            {
+                len:18,
+                message:'身份证号为18位'
             }
             ]}
         >
@@ -200,19 +242,16 @@ const AddAsocciate = () => {
            <Input />
         </Form.Item>
         <Form.Item
-            name="ocupation"
-            label="职位"
+            name="workID"
+            label="工号"
             rules={[
             {
                 required: true,
-                message: '请选择员工职位!',
+                message: '请输入员工工号!',
             },
             ]}
-            initialValue="请点击后选择职位"
         >
-            <Select >
-
-            </Select>
+           <Input />
         </Form.Item>
         <Form.Item
             name="department"
@@ -225,9 +264,30 @@ const AddAsocciate = () => {
             ]}
             initialValue = "请点击后选择部门"
         >
-            <Select >
+            <Select 
+                onChange={handleDepartmentOptionChange}
+            >
+                {departmentOptions}
             </Select>
         </Form.Item>
+        <Form.Item
+            name="ocupation"
+            label="职位"
+            rules={[
+            {
+                required: true,
+                message: '请选择员工职位!',
+            },
+            ]}
+            initialValue="请点击后选择职位,需先选择部门"
+        >
+            <Select 
+            disabled={ocupationDisabled}
+            >
+                {ocupationOptions}
+            </Select>
+        </Form.Item>
+        
         <Form.Item {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit">
                     添加

@@ -34,13 +34,14 @@ const LookUpDepartment = ()=> {
     const addDepartment = ()=>{
         history.push('/departmentManage/addDepartment') 
     }
-    function confirm(departmentID) {
+    function confirm(departmentName) {
         return ()=>{
-            deleteDepartment({departmentID:departmentID}).then(res=>{
+            deleteDepartment({departmentName})
+            .then(res=>{
                 if(res.data.code===200){
                     lookUpDepartment().then(res=>{
-                setData(res.data.data)
-            })
+                        setData(res.data.data)
+                    })
                 }
             }).catch(err=>console.log(err))
         }
@@ -90,8 +91,8 @@ const LookUpDepartment = ()=> {
                     <Space>
                         <Button type="primary">编辑</Button>
                         <Popconfirm
-                            title="你确定要删除该部门吗?"
-                            onConfirm={confirm(record.departmentID)}
+                            title="删除部门会同步删除相关职位，你确定要删除吗?"
+                            onConfirm={confirm(record.departmentName)}
                             onCancel={cancel}
                             okText="确认"
                             cancelText="取消"

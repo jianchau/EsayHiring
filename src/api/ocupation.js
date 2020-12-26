@@ -4,8 +4,8 @@ const addOcupation = (params)=>{
     return request.post('/ocupation/addOcupation',params)
 }
 
-const lookUpOcupation = ()=>{
-    return request.get('/ocupation/lookUpOcupation')
+const lookUpOcupation = (params)=>{
+    return request.get('/ocupation/lookUpOcupation',{params})
 }
 
 const deleteOcupation = (params)=>{

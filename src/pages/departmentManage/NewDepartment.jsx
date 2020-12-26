@@ -44,12 +44,16 @@ const NewDepartment = () => {
     const [form] = Form.useForm();
     const onFinish = (values) => {
         newDepartment(values).then(res=>{
+            console.log(res);
             if(res.data.code===200){
                 message.info("添加成功")
                 history.push('/departmentManage/lookUpDepartments')
             }
             else if(res.data.code === 5001){
                 message.info("该部门号已经存在")
+            }
+            else if(res.data.code === 5002){
+                message.info('该部门名称已存在')
             }
         })
     };

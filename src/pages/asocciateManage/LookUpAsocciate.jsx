@@ -12,22 +12,28 @@ const columns = [
     {
         title:'工号',
         align:'center',
-        dataIndex:'asocciateID',
+        dataIndex:'asocciateID'
     },
     {
         title: '姓名',
         align:'center',
-        dataIndex: 'name',
+        dataIndex: 'name'
     },
     {
         title: '性别',
         align:'center',
-        dataIndex: 'gender',
+        dataIndex: 'gender'
     },
     {
         title: '年龄',
         align:'center',
-        dataIndex: 'age',
+        dataIndex: 'age'
+    },
+    {
+        title:'电话号码',
+        align:'center',
+        dataIndex:'phoneNumber'
+        
     },
     {
         title:'职位',
