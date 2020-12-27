@@ -1,7 +1,11 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
-import { Table, Button,Space } from 'antd';
+import { Table, Button,Space,Image } from 'antd';
+import moment from 'moment'
 
+import {lookUpAsocciate} from './../../api/asocciate'
+
+moment.locale('zh-CN')
 const columns = [
     {
         title:'序号',
@@ -12,7 +16,13 @@ const columns = [
     {
         title:'工号',
         align:'center',
-        dataIndex:'asocciateID'
+        dataIndex:'workID'
+    },
+    {
+        title:'头像',
+        align:'center',
+        dataIndex:'avatar',
+        render:(text,record,index)=><Image alt='' src={record.avatar}/>
     },
     {
         title: '姓名',
@@ -43,12 +53,13 @@ const columns = [
     {
         title:'所属部门',
         align:'center',
-        dataIndex:'department'
+        dataIndex:'inWhichDepartment'
     },
     {
         title:'入职时间',
         align:'center',
-        dataIndex:'startTime'
+        // dataIndex:'startDate'
+        render:(text,record,index)=>moment(record.startDate).format('YYYY'+ '年' + 'MM' + '月' + 'DD' + '日')
     },
     {
         title:'操作',
@@ -56,22 +67,27 @@ const columns = [
         key:"operation",
         render:()=>{
             return (
-                <>
-                    <Button type="primary">详情</Button>
-                    <Button type="primary">详情</Button>
-                </>
+                <Space>
+                    <Button type="primary">档案</Button>
+                    <Button type="primary">删除</Button>
+                </Space>
             )
         }
     }
 ];
 
-const data = [];
-
 const LookUpAsocciate = ()=> {
     const history = useHistory()
     const [selectedRowKeys,setSelectedRowKeys] = useState([])
+    const [data,setData] = useState([])
     const [loading,setLoading] = useState(false)
-    
+    useEffect(()=>{
+        lookUpAsocciate().then(res=>{
+            if(res.data.code === 200){
+                setData(res.data.data)
+            }
+        })
+    },[])
     const start = () => {
         setLoading(true);
         setTimeout(() => {
@@ -111,6 +127,7 @@ const LookUpAsocciate = ()=> {
             <Table 
                 rowSelection={rowSelection} 
                 bordered
+                rowKey = {record=>record.ocupationID}
                 scroll={{
                     y:'320px'
                 }}

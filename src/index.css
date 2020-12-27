@@ -88,5 +88,10 @@ code {
   left:50%;
   transform: translate(50%,50%);
 }
+/* 设置form垂直方向上滚动 */
+.form-wrapper{
+  height: 100%;
+  overflow-y: auto;
+}
 
 

@@ -38,6 +38,7 @@ const LookUpDepartment = ()=> {
         return ()=>{
             deleteDepartment({departmentName})
             .then(res=>{
+ 
                 if(res.data.code===200){
                     lookUpDepartment().then(res=>{
                         setData(res.data.data)
@@ -81,7 +82,18 @@ const LookUpDepartment = ()=> {
         {
             title:'部门职位',
             align:'center',
-            dataIndex:'departmentOcupations',
+            // dataIndex:'departmentOcupations',
+            render:(text,record,index)=>{
+                return (
+                    record.departmentOcupations.map(option=>{
+                        return (record.departmentOcupations.indexOf(option)===record.departmentOcupations.length-1)
+                                ?option:option+','
+
+                           
+                    })
+                       
+                )
+            }
         },
         {
             title:'操作',

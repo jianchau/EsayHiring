@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import {useHistory} from 'react-router-dom'
 import 'moment/locale/zh-cn'
 import {
     Form,
@@ -6,12 +7,14 @@ import {
     Select,
     Button,
     Upload,
-    message
+    message,
+    DatePicker
 } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 
 import {lookUpDepartment} from './../../api/department'
 import {lookUpOcupation} from './../../api/ocupation'
+import {addAsocciate} from './../../api/asocciate'
 
 const {Option} = Select
 const formItemLayout = {
@@ -46,6 +49,7 @@ const tailFormItemLayout = {
 };
 
 const AddAsocciate = () => {
+    const history = useHistory()
     const [form] = Form.useForm();
     const [loading,setLoading] = useState(false)
     const [ocupationDisabled,setOcupationDisabled] = useState(true)
@@ -61,9 +65,22 @@ const AddAsocciate = () => {
     },[])
     
     const departmentOptions = departmentData.map(department=><Option value = {department.departmentName} key={department.departmentID}>{department.departmentName}</Option>)
-    const ocupationOptions = ocupationData.map(ocupation=><Option value={ocupation.ocupationName}>{ocupation.ocupationName}</Option>)
+    const ocupationOptions = ocupationData.map(ocupation=><Option value={ocupation.ocupationName} key={ocupation.ocuapationID}>{ocupation.ocupationName}</Option>)
     const onFinish = (values) => {
-        console.log('Received values of form: ', values);
+        values.avatar = imageUrl
+        addAsocciate(values).then(res=>{
+            if(res.data.code === 5001){
+                message.info('该身份证号已存在！')
+            }
+            else if(res.data.code=== 5002){
+                message.info('该工号已存在！')
+            }
+            else if(res.data.code === 200){
+                
+                message.info('添加员工成功！')
+                history.push('/asocciateManage/lookUpAsocciate')
+            }
+        })
     };
     const uploadButton = (
         <div>
@@ -112,7 +129,8 @@ const AddAsocciate = () => {
     }
       
     return (
-        <Form
+        <div class="form-wrapper">
+            <Form
             {...formItemLayout}
             form={form}
             name="register"
@@ -146,7 +164,7 @@ const AddAsocciate = () => {
             <Input />
         </Form.Item>
         <Form.Item
-            name="CardID"
+            name="cardID"
             label="身份证号"
             rules={[
             {
@@ -218,6 +236,7 @@ const AddAsocciate = () => {
         >
             <Upload
                 name="avatar"
+                method= 'get'
                 listType="picture-card"
                 className="avatar-uploader"
                 showUploadList={false}
@@ -254,7 +273,19 @@ const AddAsocciate = () => {
            <Input />
         </Form.Item>
         <Form.Item
-            name="department"
+            name="startDate"
+            label="入职时间"
+            rules={[
+            {
+                required: true,
+                message: '请选择员工入职时间!',
+            },
+            ]}
+        >
+            <DatePicker />
+        </Form.Item>
+        <Form.Item
+            name="inWhichDepartment"
             label="所属部门"
             rules={[
             {
@@ -294,6 +325,7 @@ const AddAsocciate = () => {
             </Button>
         </Form.Item>
         </Form>
+        </div>
     );
 };
 

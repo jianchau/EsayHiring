@@ -61,7 +61,10 @@ const AddOcupation = () => {
 
     const onFinish = (values) => {
         addOcupation(values).then(res=>{
-            if(res.data.code===200){
+            if(res.data.code === 5001){
+                message.info('该职位名称已存在')
+            }
+            else if(res.data.code===200){
                 message.info('添加职位成功')
                 history.push('/ocupationManage/lookUpOcupations')
             }
