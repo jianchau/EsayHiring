@@ -71,7 +71,6 @@ const AddOcupation = () => {
         })
     };
 
-
     return (
         <Form
         {...formItemLayout}

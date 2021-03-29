@@ -81,15 +81,14 @@ const LookUpDepartment = ()=> {
         },
         {
             title:'部门职位',
+            width:'250px',
             align:'center',
             // dataIndex:'departmentOcupations',
             render:(text,record,index)=>{
                 return (
                     record.departmentOcupations.map(option=>{
                         return (record.departmentOcupations.indexOf(option)===record.departmentOcupations.length-1)
-                                ?option:option+','
-
-                           
+                            ?option:option+'，'
                     })
                        
                 )
@@ -97,20 +96,21 @@ const LookUpDepartment = ()=> {
         },
         {
             title:'操作',
+            width:'150px',
             align:'center',
             render:(text,record)=>{
                 return (
                     <Space>
                         <Button type="primary">编辑</Button>
                         <Popconfirm
-                            title="删除部门会同步删除相关职位，你确定要删除吗?"
+                            title="会同步删除相关职位和员工信息！"
                             onConfirm={confirm(record.departmentName)}
                             onCancel={cancel}
                             okText="确认"
                             cancelText="取消"
                         >
                             <Button type="primary" >删除</Button>
-                        </Popconfirm>,
+                        </Popconfirm>
                     </Space>
                 )
             }

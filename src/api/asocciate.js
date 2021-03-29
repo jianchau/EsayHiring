@@ -1,12 +1,15 @@
-import reqest from './../utils/request'
 import request from './../utils/request'
-const addAsocciate = (params)=>{
+const addAsocciate = (params) => {
     return request.post('/asocciate/addAsocciate',params)
 }
 
-const lookUpAsocciate = (params)=>{
+const lookUpAsocciate = (params) => {
     return request.get('/asocciate/lookUpAsocciate',{params})
 }
 
+const deleteAsocciate = (params) => {
+    return request.get('/asocciate/deleteAsocciate',{params})
+}
 
-export {addAsocciate,lookUpAsocciate}
+
+export {addAsocciate,lookUpAsocciate,deleteAsocciate}

@@ -3,76 +3,108 @@ import {useHistory} from 'react-router-dom'
 import { Table, Button,Space,Image } from 'antd';
 import moment from 'moment'
 
-import {lookUpAsocciate} from './../../api/asocciate'
+import {lookUpAsocciate,deleteAsocciate} from './../../api/asocciate'
 
 moment.locale('zh-CN')
+
+const clickHandler = (params) => {
+    return function(){
+        deleteAsocciate(params)
+    }
+    
+}
+
 const columns = [
     {
         title:'序号',
-        dataIndex:'index',
         align:'center',
-        render:(text,record,index)=>{return index+1}
+        key:'index',
+        render:(text,record,index)=>{return index+1},
+        fixed:'left'
     },
     {
         title:'工号',
         align:'center',
-        dataIndex:'workID'
+        dataIndex:'workID',
+        key:'workID',
+        fixed:'left'
     },
     {
         title:'头像',
         align:'center',
         dataIndex:'avatar',
-        render:(text,record,index)=><Image alt='' src={record.avatar}/>
+        key:'avatar',
+        render:(text,record,index)=><Image width="60px" height="60px" alt='' src={record.avatar}/>,
+        fixed:'left'
     },
     {
         title: '姓名',
         align:'center',
-        dataIndex: 'name'
+        dataIndex: 'name',
+        key:'name'
+
     },
     {
         title: '性别',
         align:'center',
-        dataIndex: 'gender'
+        dataIndex: 'gender',
+        key:'gender'
     },
     {
         title: '年龄',
         align:'center',
-        dataIndex: 'age'
+        dataIndex: 'age',
+        key:'age'
     },
     {
         title:'电话号码',
+        width:'150px',
         align:'center',
-        dataIndex:'phoneNumber'
+        dataIndex:'phoneNumber',
+        key:'phoneNumber'
         
     },
     {
         title:'职位',
         align:'center',
-        dataIndex:'ocupation'
+        dataIndex:'ocupation',
+        key:'ocupation'
     },
     {
         title:'所属部门',
         align:'center',
-        dataIndex:'inWhichDepartment'
+        dataIndex:'inWhichDepartment',
+        key:'inWhichDepartment'
     },
     {
         title:'入职时间',
+        width:'150px',  
         align:'center',
         // dataIndex:'startDate'
-        render:(text,record,index)=>moment(record.startDate).format('YYYY'+ '年' + 'MM' + '月' + 'DD' + '日')
+        key:"startDate",
+        render:(text,record,index) => moment(record.startDate).format('YYYY'+ '年' + 'MM' + '月' + 'DD' + '日')
     },
     {
         title:'操作',
         align:'center',
+        width:'150px',
         key:"operation",
-        render:()=>{
+        render:(text,record,index)=>{
             return (
                 <Space>
                     <Button type="primary">档案</Button>
-                    <Button type="primary">删除</Button>
+                    <Button type="primary" 
+                        onClick={clickHandler({
+                            asocciateID:record.asocciateID,
+                            ocupation:record.ocupation,
+                            inWhichDepartment:record.inWhichDepartment
+                        })}>
+                        删除
+                    </Button>
                 </Space>
             )
-        }
+        },
+        fixed:'right'
     }
 ];
 
@@ -88,6 +120,8 @@ const LookUpAsocciate = ()=> {
             }
         })
     },[])
+
+
     const start = () => {
         setLoading(true);
         setTimeout(() => {
@@ -108,7 +142,7 @@ const LookUpAsocciate = ()=> {
     const addAsocciate = ()=>{
         history.push('/asocciateManage/addAsocciate') 
     }
-
+    
     return (
         <div>
             <div style={{ marginBottom: 16 }}>

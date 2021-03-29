@@ -86,7 +86,7 @@ const LookUpOCupation = ()=> {
                     <Space>
                         <Button type="primary">编辑</Button>
                         <Popconfirm
-                            title="你确定要删除这个职位吗?"
+                            title="确定删除这个职位?"
                             onConfirm={confirm(record.ocupationID)}
                             onCancel={cancel}
                             okText="确定"

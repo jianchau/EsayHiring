@@ -48,12 +48,13 @@ const tailFormItemLayout = {
     },
 };
 
-const AddAsocciate = () => {
+const AddAsocciate =  () => {
     const history = useHistory()
     const [form] = Form.useForm();
     const [loading,setLoading] = useState(false)
     const [ocupationDisabled,setOcupationDisabled] = useState(true)
     const [departmentData,setDepartmentData] = useState([])
+    const [emptyFlag,setEmptyFlag] = useState(false)
     const [ocupationData,setOcupationData] = useState([])
     const [imageUrl,setImageUrl] = useState('')
     useEffect(()=>{
@@ -62,6 +63,18 @@ const AddAsocciate = () => {
                 setDepartmentData(res.data.data)
             }
         })
+    },[])
+    useEffect(async ()=>{
+        let arr = []
+        arr.push(lookUpDepartment())
+        arr.push(lookUpOcupation())
+        await Promise.all(arr)
+        .then(res=>{
+            if(res[0].data.data.length===0||res[1].data.data.length===0){
+                setEmptyFlag(true)
+            }
+        })
+        .catch(err=>console.log(err))
     },[])
     
     const departmentOptions = departmentData.map(department=><Option value = {department.departmentName} key={department.departmentID}>{department.departmentName}</Option>)
@@ -127,9 +140,9 @@ const AddAsocciate = () => {
             setOcupationDisabled(false)
         })
     }
-      
-    return (
-        <div class="form-wrapper">
+    
+    return emptyFlag?<div>请先添加部门和职位</div>:(
+        <div className="form-wrapper">
             <Form
             {...formItemLayout}
             form={form}
@@ -326,7 +339,7 @@ const AddAsocciate = () => {
         </Form.Item>
         </Form>
         </div>
-    );
+    ); 
 };
 
 export default AddAsocciate
